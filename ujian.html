@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ujian Kubus</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">📦 KubusKu</a>
+
+    <div>
+      <a href="index.html" class="btn btn-light btn-sm">Beranda</a>
+      <a href="materi.html" class="btn btn-light btn-sm">Latihan</a>
+      <a href="latihan.html" class="btn btn-light btn-sm">Ujian</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+<h2 class="text-center fw-bold">📊 Ujian Pemahaman Kubus</h2>
+<p class="text-center text-muted">Jawab semua soal dengan jujur ya!</p>
+
+<!-- PROGRESS -->
+<div class="mb-4">
+  <div class="progress">
+    <div id="progressBar" class="progress-bar bg-success" style="width:0%">0%</div>
+  </div>
+</div>
+
+<form id="quizForm"></form>
+
+<div class="text-center mt-4">
+  <button class="btn btn-success btn-lg" onclick="submitQuiz()">Selesai Ujian</button>
+</div>
+
+<div id="hasil" class="mt-5 text-center"></div>
+
+</div>
+
+<script>
+
+// ================= DATA SOAL =================
+const soal = [
+  {
+    tanya: "Ruas garis penghubung titik sudut kubus disebut?",
+    opsi: ["Sisi","Diagonal Bidang","Rusuk","Titik Sudut"],
+    benar: "Rusuk"
+  },
+  {
+    tanya: "Jumlah titik sudut kubus?",
+    opsi: ["4","6","8","12"],
+    benar: "8"
+  },
+  {
+    tanya: "Bentuk sisi kubus?",
+    opsi: ["Persegi panjang","Belah ketupat","Jajar genjang","Persegi"],
+    benar: "Persegi"
+  },
+  {
+    tanya: "Luas sisi jika s=7?",
+    opsi: ["14","28","49","343"],
+    benar: "49"
+  },
+  {
+    tanya: "Rumus luas permukaan?",
+    opsi: ["4s²","6s²","s³","12s"],
+    benar: "6s²"
+  },
+  {
+    tanya: "Volume jika s=10?",
+    opsi: ["100","600","1000","10000"],
+    benar: "1000"
+  },
+  {
+    tanya: "Luas 150 cm², rusuk?",
+    opsi: ["5","10","15","25"],
+    benar: "5"
+  },
+  {
+    tanya: "Kawat 1.2m, rusuk?",
+    opsi: ["12","10","8","6"],
+    benar: "10"
+  },
+  {
+    tanya: "Diagonal ruang s=5?",
+    opsi: ["5√2","5√3","10√2","25√3"],
+    benar: "5√3"
+  },
+  {
+    tanya: "Volume 512 liter, rusuk?",
+    opsi: ["6","7","8","9"],
+    benar: "8"
+  }
+];
+
+// ================= GENERATE SOAL =================
+let form = document.getElementById("quizForm");
+
+soal.forEach((item, i) => {
+  form.innerHTML += `
+    <div class="card p-4 mt-3 shadow">
+      <p><b>Soal ${i+1}:</b> ${item.tanya}</p>
+
+      ${item.opsi.map(opt => `
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q${i}" value="${opt}" onclick="updateProgress()">
+          <label class="form-check-label">${opt}</label>
+        </div>
+      `).join("")}
+    </div>
+  `;
+});
+
+// ================= PROGRESS =================
+function updateProgress() {
+  let total = soal.length;
+  let terjawab = 0;
+
+  for (let i=0;i<total;i++) {
+    if (document.querySelector(`input[name=q${i}]:checked`)) {
+      terjawab++;
+    }
+  }
+
+  let persen = (terjawab / total) * 100;
+  let bar = document.getElementById("progressBar");
+
+  bar.style.width = persen + "%";
+  bar.innerText = Math.round(persen) + "%";
+}
+
+// ================= SUBMIT =================
+function submitQuiz() {
+  let skor = 0;
+
+  soal.forEach((item, i) => {
+    let jawaban = document.querySelector(`input[name=q${i}]:checked`);
+    if (jawaban && jawaban.value === item.benar) {
+      skor++;
+    }
+  });
+
+  tampilkanHasil(skor);
+}
+
+// ================= EVALUASI CERDAS =================
+function tampilkanHasil(skor) {
+  let hasil = document.getElementById("hasil");
+  let nilai = (skor / soal.length) * 100;
+
+  let feedback = "";
+
+  if (nilai == 100) {
+    feedback = "🔥 SEMPURNA! Kamu master kubus!";
+  } 
+  else if (nilai >= 80) {
+    feedback = "🎉 Sangat baik! Kamu sudah paham!";
+  } 
+  else if (nilai >= 60) {
+    feedback = "👍 Cukup baik, tapi perlu latihan lagi!";
+  } 
+  else {
+    feedback = "😢 Kamu perlu belajar lagi. Yuk ulangi materi!";
+  }
+
+  hasil.innerHTML = `
+    <h3>Skor kamu: ${nilai}</h3>
+    <p>${feedback}</p>
+  `;
+}
+
+</script>
+
+</body>
+</html>

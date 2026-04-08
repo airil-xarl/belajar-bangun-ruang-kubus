@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan Kubus</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">📦 KubusKu</a>
+
+    <div>
+      <a href="index.html" class="btn btn-light btn-sm">Beranda</a>
+      <a href="materi.html" class="btn btn-light btn-sm">Latihan</a>
+      <a href="ujian.html" class="btn btn-light btn-sm">Ujian</a>
+    </div>
+  </div>
+</nav>
+
+<nav class="navbar navbar-dark bg-gradient">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">⬅ Kembali</a>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+<h2 class="text-center fw-bold">🧠 Latihan Kubus Berpikir Tingkat Tinggi</h2>
+<p class="text-center text-muted">Gunakan petunjuk jika kamu kesulitan</p>
+
+<!-- SCORE -->
+<div class="text-center mb-3">
+  <h4>⭐ Skor: <span id="score">0</span></h4>
+</div>
+
+<!-- PROGRESS -->
+<div class="mb-4">
+  <div class="progress">
+    <div id="progressBar" class="progress-bar bg-success" style="width:0%">0%</div>
+  </div>
+</div>
+
+<div id="containerSoal"></div>
+
+</div>
+
+<script>
+
+// ================= DATA SOAL =================
+const soalData = [
+{
+  level:"C1",
+  soal:"Berapa jumlah sisi pada kubus?",
+  jawaban:["6","6 sisi"],
+  hint:[
+    "Ingat kembali bentuk kubus",
+    "Hitung semua bidang yang menutup kubus",
+    "Kubus memiliki 6 sisi"
+  ]
+},
+{
+  level:"C1",
+  soal:"Berapa jumlah rusuk pada kubus?",
+  jawaban:["12","12 rusuk"],
+  hint:[
+    "Apa itu rusuk?",
+    "Hitung garis yang menghubungkan titik sudut",
+    "Kubus memiliki 12 rusuk"
+  ]
+},
+{
+  level:"C2",
+  soal:"Mengapa semua sisi kubus berbentuk persegi?",
+  jawaban:["karena semua rusuk sama panjang","rusuk sama panjang"],
+  hint:[
+    "Apa definisi kubus?",
+    "Apakah panjang rusuk sama?",
+    "Karena semua rusuk sama panjang"
+  ]
+},
+{
+  level:"C2",
+  soal:"Apa perbedaan jaring kubus dan kubus?",
+  jawaban:["2d dan 3d","jaring datar kubus ruang","datar dan ruang"],
+  hint:[
+    "Mana bentuk 2D?",
+    "Mana bentuk 3D?",
+    "Jaring datar, kubus ruang"
+  ]
+},
+{
+  level:"C3",
+  soal:"Rusuk 4 cm, berapa volumenya?",
+  jawaban:["64"],
+  hint:[
+    "Gunakan rumus volume",
+    "s × s × s",
+    "4×4×4 = 64"
+  ]
+},
+{
+  level:"C3",
+  soal:"Rusuk 5 cm, luas permukaan?",
+  jawaban:["150"],
+  hint:[
+    "Jumlah sisi ada 6",
+    "Luas satu sisi = 25",
+    "6 × 25 = 150"
+  ]
+},
+{
+  level:"C4",
+  soal:"Apakah semua susunan 6 persegi bisa jadi kubus?",
+  jawaban:["tidak"],
+  hint:[
+    "Perhatikan saat dilipat",
+    "Apakah ada yang bertabrakan?",
+    "Tidak semua bisa"
+  ]
+},
+{
+  level:"C4",
+  soal:"Mengapa lingkaran tidak bisa jadi kubus?",
+  jawaban:["karena bertabrakan","tidak bisa dilipat"],
+  hint:[
+    "Coba bayangkan dilipat",
+    "Apakah bentuk cocok?",
+    "Sisi akan bertabrakan"
+  ]
+},
+{
+  level:"C5",
+  soal:"Mana lebih efisien: jaring simetris atau tidak?",
+  jawaban:["simetris","jaring simetris"],
+  hint:[
+    "Mana lebih mudah dilipat?",
+    "Mana lebih rapi?",
+    "Jawaban: simetris"
+  ]
+},
+{
+  level:"C5",
+  soal:"Mengapa jaring 6 persegi bisa gagal jadi kubus?",
+  jawaban:["susunan salah","tidak memenuhi syarat","posisi salah"],
+  hint:[
+    "Apakah semua sisi terhubung?",
+    "Apakah bertabrakan?",
+    "Susunan tidak memenuhi syarat"
+  ]
+}
+];
+
+// ================= GENERATE UI =================
+let container = document.getElementById("containerSoal");
+
+soalData.forEach((item, i) => {
+  container.innerHTML += `
+    <div class="card p-4 mt-3 shadow">
+      <span class="badge bg-primary mb-2">${item.level}</span>
+      <p><b>Soal ${i+1}:</b> ${item.soal}</p>
+
+      <input id="input${i}" class="form-control mb-2">
+
+      <button class="btn btn-primary" onclick="cekJawaban(${i})">Cek</button>
+
+      <p id="feedback${i}"></p>
+      <p id="hint${i}" class="text-muted"></p>
+    </div>
+  `;
+});
+
+// ================= LOGIC =================
+let score = 0;
+let benar = 0;
+let percobaan = {};
+
+function cekJawaban(i) {
+  let input = document.getElementById("input"+i).value.toLowerCase();
+  let fb = document.getElementById("feedback"+i);
+  let hint = document.getElementById("hint"+i);
+
+  if (!percobaan[i]) percobaan[i] = 0;
+
+  if (soalData[i].jawaban.includes(input)) {
+    fb.innerHTML = "🎉 Benar!";
+    fb.style.color = "green";
+
+    score += 10;
+    benar++;
+
+    document.getElementById("score").innerText = score;
+    updateProgress();
+
+  } else {
+    percobaan[i]++;
+    fb.innerHTML = "❌ Coba lagi";
+
+    let step = percobaan[i]-1;
+    if (soalData[i].hint[step]) {
+      hint.innerHTML = "💡 " + soalData[i].hint[step];
+    } else {
+      hint.innerHTML = "✅ " + soalData[i].jawaban[0];
+    }
+  }
+}
+
+// ================= PROGRESS =================
+function updateProgress() {
+  let persen = (benar / soalData.length) * 100;
+  let bar = document.getElementById("progressBar");
+
+  bar.style.width = persen + "%";
+  bar.innerText = Math.round(persen) + "%";
+}
+
+</script>
+
+</body>
+</html>

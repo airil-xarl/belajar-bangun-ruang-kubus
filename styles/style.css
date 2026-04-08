@@ -1,0 +1,132 @@
+/* ================= GLOBAL STYLE ================= */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #9db2f7, #91dff3);
+  color: #333;
+  scroll-behavior: smooth;
+}
+
+/* ================= NAVBAR ================= */
+.bg-gradient {
+  background: linear-gradient(135deg, #4facfe, #6a11cb);
+}
+
+.navbar {
+  border-radius: 0 0 15px 15px;
+}
+
+.navbar-brand {
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+/* ================= HERO ================= */
+h1, h2, h3, h4 {
+  color: #2c2c54;
+}
+
+/* ================= CARD ================= */
+.card {
+  border: none;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+/* Hover effect */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ================= BUTTON ================= */
+.btn {
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4facfe, #6a11cb);
+  border: none;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* ================= PROGRESS BAR ================= */
+.progress {
+  height: 20px;
+  border-radius: 20px;
+  background: #e0e0ff;
+}
+
+.progress-bar {
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* ================= ANIMASI KUBUS ================= */
+.cube-animation {
+  width: 120px;
+  height: 120px;
+  margin: 30px auto;
+  background: linear-gradient(135deg, #6a11cb, #4facfe);
+  border-radius: 10px;
+  animation: rotateCube 4s infinite linear;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+@keyframes rotateCube {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+
+/* ================= LIST ================= */
+ul li {
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+}
+
+/* ================= SECTION SPACING ================= */
+section {
+  margin-bottom: 30px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .cube-animation {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* ================= SHADOW UTILITY ================= */
+.shadow {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* ================= SMOOTH FADE ================= */
+.card, .btn, img {
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
