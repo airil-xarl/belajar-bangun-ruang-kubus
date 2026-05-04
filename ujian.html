@@ -2,45 +2,29 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ujian Kubus</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-gradient shadow">
+<nav class="navbar navbar-dark bg-danger">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">📦 KubusKu</a>
-
-    <div>
-      <a href="index.html" class="btn btn-light btn-sm">Beranda</a>
-      <a href="materi.html" class="btn btn-light btn-sm">Latihan</a>
-      <a href="latihan.html" class="btn btn-light btn-sm">Ujian</a>
-    </div>
+    <a href="index.html" class="navbar-brand">⬅ Dashboard</a>
   </div>
 </nav>
 
 <div class="container mt-4">
 
-<h2 class="text-center fw-bold">📊 Ujian Pemahaman Kubus</h2>
-<p class="text-center text-muted">Jawab semua soal dengan jujur ya!</p>
+<h2 class="text-center">📝 Ujian Pemahaman Kubus</h2>
+<p class="text-center text-muted">Jawab semua soal dengan teliti</p>
 
-<!-- PROGRESS -->
-<div class="mb-4">
-  <div class="progress">
-    <div id="progressBar" class="progress-bar bg-success" style="width:0%">0%</div>
-  </div>
-</div>
-
-<form id="quizForm"></form>
+<div id="soalContainer"></div>
 
 <div class="text-center mt-4">
-  <button class="btn btn-success btn-lg" onclick="submitQuiz()">Selesai Ujian</button>
+  <button class="btn btn-success" onclick="hitung()">Submit Jawaban</button>
 </div>
 
 <div id="hasil" class="mt-5 text-center"></div>
@@ -51,134 +35,123 @@
 
 // ================= DATA SOAL =================
 const soal = [
-  {
-    tanya: "Ruas garis penghubung titik sudut kubus disebut?",
-    opsi: ["Sisi","Diagonal Bidang","Rusuk","Titik Sudut"],
-    benar: "Rusuk"
-  },
-  {
-    tanya: "Jumlah titik sudut kubus?",
-    opsi: ["4","6","8","12"],
-    benar: "8"
-  },
-  {
-    tanya: "Bentuk sisi kubus?",
-    opsi: ["Persegi panjang","Belah ketupat","Jajar genjang","Persegi"],
-    benar: "Persegi"
-  },
-  {
-    tanya: "Luas sisi jika s=7?",
-    opsi: ["14","28","49","343"],
-    benar: "49"
-  },
-  {
-    tanya: "Rumus luas permukaan?",
-    opsi: ["4s²","6s²","s³","12s"],
-    benar: "6s²"
-  },
-  {
-    tanya: "Volume jika s=10?",
-    opsi: ["100","600","1000","10000"],
-    benar: "1000"
-  },
-  {
-    tanya: "Luas 150 cm², rusuk?",
-    opsi: ["5","10","15","25"],
-    benar: "5"
-  },
-  {
-    tanya: "Kawat 1.2m, rusuk?",
-    opsi: ["12","10","8","6"],
-    benar: "10"
-  },
-  {
-    tanya: "Diagonal ruang s=5?",
-    opsi: ["5√2","5√3","10√2","25√3"],
-    benar: "5√3"
-  },
-  {
-    tanya: "Volume 512 liter, rusuk?",
-    opsi: ["6","7","8","9"],
-    benar: "8"
-  }
+
+/// ================= PENGERTIAN =================
+{t:"Jumlah sisi kubus adalah...", o:["4","6","8","12"], a:"6"},
+{t:"Jumlah rusuk kubus...", o:["8","10","12","14"], a:"12"},
+{t:"Jumlah titik sudut kubus...", o:["6","8","10","12"], a:"8"},
+{t:"Bentuk sisi kubus...", o:["Persegi","Segitiga","Lingkaran","Trapesium"], a:"Persegi"},
+{t:"Kubus adalah bangun ruang...", o:["2D","3D","1D","0D"], a:"3D"},
+
+/// ================= JARING =================
+{t:"Jaring kubus terdiri dari...", o:["5","6","7","8"], a:"6"},
+{t:"Syarat jaring kubus...", o:["Terpisah","Terhubung","Bulat","Besar"], a:"Terhubung"},
+{t:"Jika salah jaring dilipat...", o:["Menyatu","Bertabrakan","Hilang","Mengecil"], a:"Bertabrakan"},
+{t:"Tidak semua jaring bisa jadi kubus karena...", o:["Kurang warna","Tidak bisa dilipat","Terlalu besar","Rusak"], a:"Tidak bisa dilipat"},
+{t:"Jaring kubus adalah bentuk...", o:["3D","2D","4D","1D"], a:"2D"},
+
+/// ================= LUAS =================
+{t:"Rumus luas permukaan kubus...", o:["s³","6s²","s²","12s"], a:"6s²"},
+{t:"Jika s=4, luas permukaan...", o:["64","96","16","24"], a:"96"},
+{t:"Jumlah sisi kubus...", o:["4","5","6","7"], a:"6"},
+{t:"Luas satu sisi...", o:["s³","s²","2s","6s"], a:"s²"},
+{t:"Jika s=5, luas permukaan...", o:["150","125","100","75"], a:"125"},
+
+/// ================= VOLUME =================
+{t:"Rumus volume kubus...", o:["s²","s³","6s²","12s"], a:"s³"},
+{t:"Jika s=3, volume...", o:["9","27","18","36"], a:"27"},
+{t:"Volume adalah...", o:["Luas","Isi ruang","Keliling","Tinggi"], a:"Isi ruang"},
+{t:"Jika s=6, volume...", o:["216","36","72","108"], a:"216"},
+{t:"Jika volume 64, maka rusuk...", o:["2","3","4","5"], a:"4"}
+
 ];
 
-// ================= GENERATE SOAL =================
-let form = document.getElementById("quizForm");
+// ================= GENERATE =================
+let container = document.getElementById("soalContainer");
 
-soal.forEach((item, i) => {
-  form.innerHTML += `
-    <div class="card p-4 mt-3 shadow">
-      <p><b>Soal ${i+1}:</b> ${item.tanya}</p>
+soal.forEach((s, i) => {
 
-      ${item.opsi.map(opt => `
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="q${i}" value="${opt}" onclick="updateProgress()">
-          <label class="form-check-label">${opt}</label>
-        </div>
-      `).join("")}
+  let opsiHTML = "";
+
+  s.o.forEach(o => {
+    opsiHTML += `
+      <div>
+        <input type="radio" name="q${i}" value="${o}">
+        ${o}
+      </div>
+    `;
+  });
+
+  container.innerHTML += `
+  <div class="card p-4 mt-3" id="card${i}">
+      <p><b>Soal ${i+1}:</b> ${s.t}</p>
+      ${opsiHTML}
     </div>
   `;
 });
 
-// ================= PROGRESS =================
-function updateProgress() {
-  let total = soal.length;
-  let terjawab = 0;
+// ================= HITUNG =================
+function hitung() {
 
-  for (let i=0;i<total;i++) {
-    if (document.querySelector(`input[name=q${i}]:checked`)) {
-      terjawab++;
+  let score = 0;
+
+  soal.forEach((s, i) => {
+
+    let pilihan = document.querySelector(`input[name="q${i}"]:checked`);
+    let card = document.getElementById("card"+i);
+
+    if (pilihan) {
+
+      if (pilihan.value === s.a) {
+        score += 5;
+
+        card.classList.remove("border-danger");
+        card.classList.add("border-success");
+
+        card.innerHTML += `<p class="text-success">✅ Jawaban benar</p>`;
+
+      } else {
+
+        card.classList.remove("border-success");
+        card.classList.add("border-danger");
+
+        card.innerHTML += `
+          <p class="text-danger">❌ Salah</p>
+          <p class="text-primary">Jawaban benar: ${s.a}</p>
+        `;
+      }
+
+    } else {
+
+      card.classList.add("border-warning");
+
+      card.innerHTML += `
+        <p class="text-warning">⚠️ Tidak dijawab</p>
+        <p class="text-primary">Jawaban benar: ${s.a}</p>
+      `;
     }
-  }
 
-  let persen = (terjawab / total) * 100;
-  let bar = document.getElementById("progressBar");
-
-  bar.style.width = persen + "%";
-  bar.innerText = Math.round(persen) + "%";
-}
-
-// ================= SUBMIT =================
-function submitQuiz() {
-  let skor = 0;
-
-  soal.forEach((item, i) => {
-    let jawaban = document.querySelector(`input[name=q${i}]:checked`);
-    if (jawaban && jawaban.value === item.benar) {
-      skor++;
-    }
   });
 
-  tampilkanHasil(skor);
-}
-
-// ================= EVALUASI CERDAS =================
-function tampilkanHasil(skor) {
   let hasil = document.getElementById("hasil");
-  let nilai = (skor / soal.length) * 100;
 
-  let feedback = "";
+  let pesan = "";
 
-  if (nilai == 100) {
-    feedback = "🔥 SEMPURNA! Kamu master kubus!";
-  } 
-  else if (nilai >= 80) {
-    feedback = "🎉 Sangat baik! Kamu sudah paham!";
-  } 
-  else if (nilai >= 60) {
-    feedback = "👍 Cukup baik, tapi perlu latihan lagi!";
-  } 
-  else {
-    feedback = "😢 Kamu perlu belajar lagi. Yuk ulangi materi!";
+  if (score >= 80) {
+    pesan = "🔥 Sangat Baik! Kamu sudah menguasai materi";
+  } else if (score >= 60) {
+    pesan = "👍 Cukup Baik, tapi masih perlu latihan";
+  } else {
+    pesan = "📘 Perlu belajar kembali dari materi";
   }
 
   hasil.innerHTML = `
-    <h3>Skor kamu: ${nilai}</h3>
-    <p>${feedback}</p>
+    <div class="alert alert-info">
+      <h3>Skor: ${score}</h3>
+      <p>${pesan}</p>
+    </div>
   `;
 }
-
 </script>
 
 </body>
